@@ -23,6 +23,8 @@
                {:person-id 8
                 :family-id 2}])
 
+
+
 (def person->province {1 :lam-dong
                        2 :quang-nam
                        3 :hanoi
@@ -89,7 +91,7 @@
                     province_vec))
 
 (def agent_vec (file->vec "/Volumes/GoogleDrive/My Drive/Self study/Econometrics study/R/My model/agent_1.csv" \,))
-(def families  (map (fn [row]
+(def my_agent (map (fn [row]
                       { :person_id   (nth row 9)
                        :family_id   (nth row 1)
                        :age         (nth row 3)
@@ -99,20 +101,20 @@
                        :schooling   (nth row 7)})
                     agent_vec))
 
-(def ten (take 10 agent_init))
-
-(def my_agent (map (fn [row]
-                     { :person_id   (nth row 9)
-                       :family_id   (nth row 1)
-                       :age         (nth row 3)
-                       :province    (nth row 4)
-                       :female      (nth row 5)
-                       :migrant     (nth row 6)
-                       :schooling   (nth row 7)})
-                    agent_init)
-  )
-
+(def ten (take 10 my_agent))
 
 (def m {:agent_id "1", :hh_id "1", :age "41", :province "1", :female "1", :migrant "0", :schooling "10"})
 
+;# Rule of migration
+;#   1. Agent will have preference for income gain & family network & urbaninzation level                      
+;#   (Preference is a vector of 3 components)
+;#   2. Agents at different group have different preferences
+;#    group 1: people in working age (15-60) (migrate to work: preference for income gain)
+;#    group 2: children & elderly (migrate to be with family: preference for network)
+;#   3. Each region has an index (score) based on income, network, urban population
+;#   (Corresponding with agent's preference)
+;#   4. Dot product of agent's preferences and region's index
+;#   5. Every year, update region's income, network, urban population -> simulate again
 
+(def agent_pref [:income_gain :family_network :urbanized_level])
+(def province_index [:income_gain :family_network :urbanized_level])
